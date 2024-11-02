@@ -1,0 +1,77 @@
+<Window x:Class="DentalPracticeManagement.Views.PatientDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding DialogTitle}"
+        Height="500" 
+        Width="400"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding DialogTitle}"
+                 FontSize="24"
+                 FontWeight="Bold"
+                 Margin="0,0,0,20"/>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="First Name"/>
+                <TextBox Text="{Binding Patient.FirstName, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Last Name"/>
+                <TextBox Text="{Binding Patient.LastName, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Date of Birth"/>
+                <DatePicker SelectedDate="{Binding Patient.DateOfBirth}"
+                           Margin="0,5,0,15"/>
+
+                <TextBlock Text="Phone Number"/>
+                <TextBox Text="{Binding Patient.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Email"/>
+                <TextBox Text="{Binding Patient.Email, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Address"/>
+                <TextBox Text="{Binding Patient.Address, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Medical History"/>
+                <TextBox Text="{Binding Patient.MedicalHistory, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Height="60"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Allergies"/>
+                <TextBox Text="{Binding Patient.Allergies, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Height="60"
+                         Margin="0,5,0,15"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+            <Button Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Width="100"
+                    Margin="0,0,10,0"/>
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Width="100"/>
+        </StackPanel>
+    </Grid>
+</Window> 

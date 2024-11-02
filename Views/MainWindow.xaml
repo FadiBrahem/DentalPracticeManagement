@@ -1,0 +1,139 @@
+<Window x:Class="DentalPracticeManagement.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DentalPracticeManagement.Views"
+        xmlns:viewmodels="clr-namespace:DentalPracticeManagement.ViewModels"
+        mc:Ignorable="d"
+        Title="Dental Practice Management" 
+        Height="768" 
+        Width="1366"
+        Background="{StaticResource BackgroundBrush}">
+    
+    <Window.DataContext>
+        <viewmodels:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Navigation Panel -->
+        <Border Background="{StaticResource PrimaryBrush}"
+                Grid.Column="0">
+            <DockPanel>
+                <!-- App Logo -->
+                <TextBlock Text="Dental Practice"
+                         DockPanel.Dock="Top"
+                         Foreground="White"
+                         FontSize="24"
+                         FontWeight="Bold"
+                         Margin="20,30,20,50"
+                         HorizontalAlignment="Center"/>
+
+                <!-- Navigation Items -->
+                <ListBox ItemsSource="{Binding NavigationItems}"
+                       SelectedItem="{Binding SelectedNavigationItem}"
+                       Background="Transparent"
+                       BorderThickness="0">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Padding" Value="15,12"/>
+                            <Setter Property="Margin" Value="10,2"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="8">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#ffffff22"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#ffffff11"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Icon}"
+                                         FontSize="16"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,15,0"/>
+                                <TextBlock Text="{Binding Title}"
+                                         FontSize="14"
+                                         VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top Header -->
+            <Border Background="White"
+                    Grid.Row="0"
+                    BorderThickness="0,0,0,1"
+                    BorderBrush="#EEEEEE">
+                <Grid Margin="20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search Box -->
+                    <Border Background="#F5F5F5"
+                            CornerRadius="8"
+                            Width="300"
+                            HorizontalAlignment="Left">
+                        <Grid>
+                            <TextBox Background="Transparent"
+                                     BorderThickness="0"
+                                     Padding="15,8"
+                                     VerticalContentAlignment="Center"/>
+                            <TextBlock Text="🔍 Search..."
+                                     Margin="15,0"
+                                     VerticalAlignment="Center"
+                                     Foreground="#999999"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- User Profile -->
+                    <StackPanel Grid.Column="1"
+                              Orientation="Horizontal"
+                              VerticalAlignment="Center">
+                        <TextBlock Text="Dr. Smith"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,20,0"/>
+                        <Ellipse Width="40" Height="40"
+                                 Fill="#DDDDDD"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Main Content -->
+            <ContentControl Grid.Row="1"
+                          Content="{Binding SelectedNavigationItem.ViewName}"
+                          Margin="20"/>
+        </Grid>
+    </Grid>
+</Window> 

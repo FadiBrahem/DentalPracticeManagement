@@ -1,0 +1,153 @@
+<UserControl x:Class="DentalPracticeManagement.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Report Controls -->
+        <Border Background="White"
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox ItemsSource="{Binding ReportTypes}"
+                         SelectedItem="{Binding SelectedReportType}"
+                         Width="200"/>
+
+                <DatePicker Grid.Column="2"
+                           SelectedDate="{Binding StartDate}"
+                           Width="150"/>
+
+                <DatePicker Grid.Column="4"
+                           SelectedDate="{Binding EndDate}"
+                           Width="150"/>
+
+                <Button Grid.Column="6"
+                        Content="Generate Report"
+                        Command="{Binding GenerateReportCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Width="150"/>
+            </Grid>
+        </Border>
+
+        <!-- Report Content -->
+        <TabControl Grid.Row="1">
+            <!-- Financial Report -->
+            <TabItem Header="Financial Summary"
+                     Visibility="{Binding IsFinancialReportVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <!-- Revenue Overview -->
+                        <Border Background="White"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="Total Revenue"
+                                             FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding FinancialReport.TotalRevenue, StringFormat='${0:N2}'}"
+                                             FontSize="24"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Total Expenses"
+                                             FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding FinancialReport.TotalExpenses, StringFormat='${0:N2}'}"
+                                             FontSize="24"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Net Income"
+                                             FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding FinancialReport.NetIncome, StringFormat='${0:N2}'}"
+                                             FontSize="24"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Revenue Chart -->
+                        <Border Background="White"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Daily Revenue"
+                                         FontSize="18"
+                                         FontWeight="Bold"
+                                         Margin="0,0,0,10"/>
+                                <lvc:CartesianChart Height="300"
+                                                   Series="{Binding RevenueChartData}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Treatment Revenue -->
+                        <Border Background="White"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Revenue by Treatment"
+                                         FontSize="18"
+                                         FontWeight="Bold"
+                                         Margin="0,0,0,10"/>
+                                <DataGrid ItemsSource="{Binding FinancialReport.RevenueByTreatment}"
+                                        AutoGenerateColumns="False"
+                                        IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Treatment"
+                                                          Binding="{Binding TreatmentName}"/>
+                                        <DataGridTextColumn Header="Count"
+                                                          Binding="{Binding Count}"/>
+                                        <DataGridTextColumn Header="Revenue"
+                                                          Binding="{Binding Revenue, StringFormat='${0:N2}'}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Payment Methods -->
+                        <Border Background="White"
+                                CornerRadius="8"
+                                Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Payment Methods"
+                                         FontSize="18"
+                                         FontWeight="Bold"
+                                         Margin="0,0,0,10"/>
+                                <lvc:PieChart Height="300"
+                                             Series="{Binding PaymentMethodsChartData}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Patient Report -->
+            <TabItem Header="Patient Statistics"
+                     Visibility="{Binding IsPatientReportVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <!-- Similar structure for patient statistics -->
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl> 

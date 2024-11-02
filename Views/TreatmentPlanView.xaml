@@ -1,0 +1,122 @@
+<UserControl x:Class="DentalPracticeManagement.Views.TreatmentPlanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:DentalPracticeManagement.Controls">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Dental Chart -->
+        <Border Background="White"
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Dental Chart"
+                          FontSize="18"
+                          FontWeight="Bold"
+                          Margin="0,0,0,10"/>
+                <controls:DentalChart DataContext="{Binding}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Treatment Plan -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="8"
+                Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Treatment List -->
+                <DockPanel>
+                    <TextBlock Text="Treatment Plan"
+                             DockPanel.Dock="Top"
+                             FontSize="18"
+                             FontWeight="Bold"
+                             Margin="0,0,0,10"/>
+                    
+                    <ListView ItemsSource="{Binding PlannedTreatments}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Treatment.Name}"
+                                                 FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Treatment.Description}"
+                                                 FontSize="12"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Column="1"
+                                             Text="{Binding Treatment.Cost, StringFormat='${0:N2}'}"
+                                             Margin="20,0"/>
+                                    
+                                    <Button Grid.Column="2"
+                                            Content="Remove"
+                                            Command="{Binding DataContext.RemoveTreatmentCommand}"
+                                            CommandParameter="{Binding}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
+
+                <!-- Treatment Selection -->
+                <StackPanel Grid.Column="1"
+                          Margin="20,0,0,0">
+                    <TextBlock Text="Add Treatment"
+                             FontSize="18"
+                             FontWeight="Bold"
+                             Margin="0,0,0,10"/>
+                    
+                    <ComboBox ItemsSource="{Binding AvailableTreatments}"
+                            SelectedItem="{Binding SelectedTreatment}"
+                            DisplayMemberPath="Name"
+                            Margin="0,0,0,10"/>
+                    
+                    <Button Content="Add to Plan"
+                            Command="{Binding AddTreatmentCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Summary -->
+        <Border Grid.Row="2"
+                Background="White"
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,20,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Total Cost:"
+                             FontWeight="Bold"/>
+                    <TextBlock Text="{Binding TotalCost, StringFormat='${0:N2}'}"
+                             FontSize="24"/>
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Content="Create Appointment"
+                        Command="{Binding CreateAppointmentCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl> 
